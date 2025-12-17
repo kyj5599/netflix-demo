@@ -1,0 +1,67 @@
+.app-shell {
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+}
+
+.app-main {
+  padding: 18px 24px;
+}
+
+.netflix-navbar {
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.netflix-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.netflix-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+.netflix-navbar .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.netflix-navbar .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.netflix-navbar .navbar-nav .nav-link.active {
+  color: #fff;
+}
+
+.netflix-search-input {
+  width: min(420px, 44vw);
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+}
+
+.netflix-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.netflix-search-input:focus {
+  border-color: rgba(229, 9, 20, 0.8) !important;
+  box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.16) !important;
+}
+
+.netflix-search-btn {
+  border-color: rgba(229, 9, 20, 0.75) !important;
+  color: rgba(229, 9, 20, 0.9) !important;
+}
+
+.netflix-search-btn:hover {
+  background: rgba(229, 9, 20, 0.9) !important;
+  border-color: rgba(229, 9, 20, 0.9) !important;
+  color: #fff !important;
+}
