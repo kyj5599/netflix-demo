@@ -2,4 +2,4 @@
 
 
 ## netflix-demo
-#### 사이트 : https://neflix-demo.netlify.app
+#### 사이트 : https://neflix-demo-yj.netlify.app
