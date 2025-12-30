@@ -4,11 +4,12 @@ import { Alert } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import MovieCard from "../MovieCard/MovieCard";
+import "./PopularMovieSlide.style.css";
 
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 6,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
@@ -35,8 +36,8 @@ const PopularMovieSlide = () => {
       <Carousel
         infinite={true}
         centerMode={true}
-        itemClas=""
-        containerClass=""
+        itemClas="movie-slider p-1"
+        containerClass="carousel-container"
         responsive={responsive}
       >
         {data.results.map((movie, index) => (
