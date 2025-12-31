@@ -4,7 +4,7 @@
 
 .popular-movie-title {
   padding: 0 24px;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
   color: white;
   font-size: 1.5rem;
   font-weight: 600;
@@ -17,6 +17,7 @@
   position: relative;
   padding-left: 24px;
   padding-right: 24px;
+  padding-top: 0;
 }
 
 .carousel-container .react-multi-carousel-list {
@@ -33,6 +34,7 @@
 .carousel-container .react-multi-carousel-track > li {
   padding: 0 !important;
   margin: 0 !important;
+  width: auto !important;
 }
 
 .carousel-container .movie-slider {
@@ -57,7 +59,7 @@
 
 /* 첫 번째 카드만 왼쪽 패딩 제거, 나머지는 유지 */
 .carousel-container .first-movie-card .movie-card-wrapper {
-  padding: 0 !important;
+  padding: 0 8px 0 0 !important;
 }
 
 /* 캐러셀 화살표 스타일 */

@@ -1,6 +1,6 @@
 .movie-card-wrapper {
   position: relative;
-  padding: 0;
+  padding: 0 8px;
   z-index: 1;
 }
 
