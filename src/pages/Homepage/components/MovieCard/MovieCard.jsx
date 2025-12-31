@@ -8,7 +8,7 @@ const MovieCard = ({ movie, index }) => {
   const releaseYear = movie.release_date
     ? new Date(movie.release_date).getFullYear()
     : new Date().getFullYear();
-  const topNumber = index !== undefined ? index + 1 : null;
+  const topNumber = index !== undefined && index < 20 ? index + 1 : null;
 
   return (
     <div className="movie-card-wrapper">

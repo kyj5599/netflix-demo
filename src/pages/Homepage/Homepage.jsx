@@ -1,6 +1,7 @@
 import React from "react";
 import Banner from "./components/Banner/Banner";
 import PopularMovieSlide from "./components/PopularMovieSlide/PopularMovieSlide";
+import "./Homepage.style.css";
 
 // 1. 배너 => popular movie 중에서 랜덤으로 하나 선택
 // 2. popular movie
@@ -9,7 +10,7 @@ import PopularMovieSlide from "./components/PopularMovieSlide/PopularMovieSlide"
 
 const Homepage = () => {
   return (
-    <div>
+    <div className="homepage-container">
       <Banner />
       <PopularMovieSlide />
     </div>

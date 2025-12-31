@@ -1,6 +1,6 @@
 .movie-card-wrapper {
   position: relative;
-  padding: 0 8px;
+  padding: 0;
   z-index: 1;
 }
 
@@ -9,8 +9,8 @@
 }
 
 .movie-card {
-  width: 220px;
-  height: 330px;
+  width: 200px;
+  height: 300px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -40,7 +40,7 @@
 }
 
 .movie-card:hover {
-  transform: scale(1.15) translateY(-20px);
+  transform: scale(1.1) translateY(-10px);
   z-index: 10;
 }
 

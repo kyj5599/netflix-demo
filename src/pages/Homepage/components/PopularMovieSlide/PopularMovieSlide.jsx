@@ -10,14 +10,17 @@ const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
     items: 6,
+    partialVisibilityGutter: 0,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
     items: 2,
+    partialVisibilityGutter: 0,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
     items: 1,
+    partialVisibilityGutter: 0,
   },
 };
 
@@ -31,17 +34,21 @@ const PopularMovieSlide = () => {
     return <Alert variant="danger"></Alert>;
   }
   return (
-    <div>
-      <h3>Top Popular Movies</h3>
+    <div className="popular-movie-slide-wrapper">
+      <h3 className="popular-movie-title">Popular Movies</h3>
       <Carousel
-        infinite={true}
-        centerMode={true}
-        itemClas="movie-slider p-1"
+        infinite={false}
+        centerMode={false}
+        itemClass="movie-slider"
         containerClass="carousel-container"
         responsive={responsive}
+        arrows={true}
+        showDots={false}
       >
         {data.results.map((movie, index) => (
-          <MovieCard movie={movie} index={index} key={index} />
+          <div key={index} className={index === 0 ? "first-movie-card" : ""}>
+            <MovieCard movie={movie} index={index} />
+          </div>
         ))}
       </Carousel>
     </div>
