@@ -28,7 +28,14 @@ const PopularMovieSlide = () => {
   const { data, isLoading, isError, error } = usePopularMoviesQuery();
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="popular-movie-slide-wrapper">
+        <h3 className="popular-movie-title">Popular Movies</h3>
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+        </div>
+      </div>
+    );
   }
   if (isError) {
     return <Alert variant="danger"></Alert>;

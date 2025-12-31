@@ -109,6 +109,38 @@
   transform: scale(1.05);
 }
 
+.banner-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+.banner-loading .loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.banner-loading .loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255, 255, 255, 0.1);
+  border-top: 5px solid #e50914;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 768px) {
   .banner {
     height: 60vh;

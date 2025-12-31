@@ -6,7 +6,15 @@ import "./Banner.style.css";
 const Banner = () => {
   const { data, isLoading, isError, error } = usePopularMoviesQuery();
   
-  if (isLoading) return <h1>Loading...</h1>;
+  if (isLoading) {
+    return (
+      <div className="banner banner-loading">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+        </div>
+      </div>
+    );
+  }
   if (isError) return <Alert variant="danger">Error: {error.message}</Alert>;
   
   const movie = data?.results[0];
