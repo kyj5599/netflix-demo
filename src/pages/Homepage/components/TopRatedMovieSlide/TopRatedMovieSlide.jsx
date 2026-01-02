@@ -14,9 +14,9 @@ const TopRatedMovieSlide = () => {
       isError={isError}
       error={error}
       title="Top Rated Movies"
+      showTopBadge={true}
     />
   );
 };
 
 export default TopRatedMovieSlide;
-

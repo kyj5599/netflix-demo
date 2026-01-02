@@ -1,11 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import useGenresQuery from "../hooks/useGenres";
 import useMovieDetailsQuery from "../hooks/useMovieDetails";
 import "../pages/Homepage/components/MovieCard/MovieCard.style.css";
 
-const MovieCard = ({ movie, index }) => {
+const MovieCard = ({ movie, index, showTopBadge = false }) => {
+  const navigate = useNavigate();
   const { data: genresData } = useGenresQuery();
   const { data: movieDetails } = useMovieDetailsQuery(movie?.id);
+
+  const handleCardClick = () => {
+    if (movie?.id) {
+      navigate(`/movies/${movie.id}`);
+    }
+  };
   
   // Calculate duration (mock - in real app, get from API)
   const duration = 94; // minutes
@@ -13,7 +21,7 @@ const MovieCard = ({ movie, index }) => {
   const releaseYear = movie.release_date
     ? new Date(movie.release_date).getFullYear()
     : new Date().getFullYear();
-  const topNumber = index !== undefined && index < 20 ? index + 1 : null;
+  const topNumber = showTopBadge && index !== undefined && index < 20 ? index + 1 : null;
 
   // Get genre names from genre IDs
   const getGenreNames = () => {
@@ -56,7 +64,7 @@ const MovieCard = ({ movie, index }) => {
   const ageRating = getAgeRating();
 
   return (
-    <div className="movie-card-wrapper">
+    <div className="movie-card-wrapper" onClick={handleCardClick} style={{ cursor: "pointer" }}>
       <div
         style={{
           backgroundImage: `url(https://media.themoviedb.org/t/p/w600_and_h900_face${movie.poster_path})`,

@@ -5,7 +5,7 @@ const fetchMovieDetails = (movieId) => {
   if (!movieId) return Promise.resolve(null);
   return api.get(`/movie/${movieId}`, {
     params: {
-      append_to_response: "release_dates",
+      append_to_response: "release_dates,videos",
     },
   });
 };

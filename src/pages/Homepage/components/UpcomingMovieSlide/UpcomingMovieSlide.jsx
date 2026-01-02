@@ -14,9 +14,9 @@ const UpcomingMovieSlide = () => {
       isError={isError}
       error={error}
       title="Upcoming Movies"
+      showTopBadge={true}
     />
   );
 };
 
 export default UpcomingMovieSlide;
-

@@ -14,6 +14,7 @@ const PopularMovieSlide = () => {
       isError={isError}
       error={error}
       title="Popular Movies"
+      showTopBadge={true}
     />
   );
 };

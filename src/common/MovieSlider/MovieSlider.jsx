@@ -12,6 +12,7 @@ const MovieSlider = ({
   isError,
   error,
   title,
+  showTopBadge = false,
 }) => {
   if (isLoading) {
     return (
@@ -42,7 +43,11 @@ const MovieSlider = ({
       >
         {movies?.results?.map((movie, index) => (
           <div key={index} className={index === 0 ? "first-movie-card" : ""}>
-            <MovieCard movie={movie} index={index} />
+            <MovieCard
+              movie={movie}
+              index={index}
+              showTopBadge={showTopBadge}
+            />
           </div>
         ))}
       </Carousel>
