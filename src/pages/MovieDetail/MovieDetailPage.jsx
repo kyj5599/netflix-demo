@@ -7,10 +7,13 @@ import useGenresQuery from "../../hooks/useGenres";
 import MovieSlider from "../../common/MovieSlider/MovieSlider";
 import { responsive } from "../../constants/responsive";
 import { Alert } from "react-bootstrap";
+import { getYouTubeTrailerKey } from "../../utils/videoUtils";
+import VideoModal from "../../components/VideoModal/VideoModal";
 import "./MovieDetail.style.css";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const { data: movie, isLoading, isError, error } = useMovieDetailsQuery(id);
   const { data: recommendations } = useMovieRecommendationsQuery(id);
   const { data: reviews } = useMovieReviewsQuery(id);
@@ -82,6 +85,16 @@ const MovieDetailPage = () => {
     }));
   };
 
+  // Get YouTube trailer
+  const trailerKey = getYouTubeTrailerKey(movie);
+
+  // Handle play button click
+  const handlePlayClick = () => {
+    if (trailerKey) {
+      setIsVideoModalOpen(true);
+    }
+  };
+
   return (
     <div className="movie-detail-page">
       {/* Hero Section */}
@@ -95,7 +108,11 @@ const MovieDetailPage = () => {
         <div className="movie-detail-hero-content">
           <h1 className="movie-detail-title">{movie.title}</h1>
           <p className="movie-detail-description">{movie.overview}</p>
-          <button className="movie-detail-play-btn">
+          <button
+            className="movie-detail-play-btn"
+            onClick={handlePlayClick}
+            disabled={!trailerKey}
+          >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
               <path d="M8 5v14l11-7z" />
             </svg>
@@ -208,6 +225,12 @@ const MovieDetailPage = () => {
           </div>
         )}
       </div>
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoKey={trailerKey}
+        movieTitle={movie?.title}
+      />
     </div>
   );
 };

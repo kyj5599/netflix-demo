@@ -1,17 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGenresQuery from "../hooks/useGenres";
 import useMovieDetailsQuery from "../hooks/useMovieDetails";
+import { getYouTubeTrailerKey } from "../utils/videoUtils";
+import VideoModal from "../components/VideoModal/VideoModal";
 import "../pages/Homepage/components/MovieCard/MovieCard.style.css";
 
 const MovieCard = ({ movie, index, showTopBadge = false }) => {
   const navigate = useNavigate();
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const { data: genresData } = useGenresQuery();
   const { data: movieDetails } = useMovieDetailsQuery(movie?.id);
 
   const handleCardClick = () => {
+    // 모달이 열려있으면 카드 클릭 무시
+    if (isVideoModalOpen) {
+      return;
+    }
     if (movie?.id) {
       navigate(`/movies/${movie.id}`);
+    }
+  };
+
+  // Get YouTube trailer
+  const trailerKey = movieDetails ? getYouTubeTrailerKey(movieDetails) : null;
+
+  // Handle play button click
+  const handlePlayClick = (e) => {
+    e.stopPropagation(); // 카드 클릭 이벤트 방지
+    if (trailerKey) {
+      setIsVideoModalOpen(true);
     }
   };
   
@@ -79,7 +97,12 @@ const MovieCard = ({ movie, index, showTopBadge = false }) => {
         <div className="movie-card-content">
           {/* Action Buttons */}
           <div className="action-buttons">
-            <button className="action-btn play-btn" aria-label="재생">
+            <button
+              className="action-btn play-btn"
+              aria-label="재생"
+              onClick={handlePlayClick}
+              disabled={!trailerKey}
+            >
               <svg
                 width="24"
                 height="24"
@@ -160,6 +183,12 @@ const MovieCard = ({ movie, index, showTopBadge = false }) => {
           </div>
         </div>
       </div>
+      <VideoModal
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
+        videoKey={trailerKey}
+        movieTitle={movie?.title}
+      />
     </div>
   );
 };
