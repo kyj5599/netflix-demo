@@ -1,5 +1,5 @@
 import React from "react";
-import "./MovieCard.style.css";
+import "../pages/Homepage/components/MovieCard/MovieCard.style.css";
 
 const MovieCard = ({ movie, index }) => {
   // Calculate duration (mock - in real app, get from API)
