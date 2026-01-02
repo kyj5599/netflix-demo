@@ -1,7 +1,12 @@
 import React from "react";
+import useGenresQuery from "../hooks/useGenres";
+import useMovieDetailsQuery from "../hooks/useMovieDetails";
 import "../pages/Homepage/components/MovieCard/MovieCard.style.css";
 
 const MovieCard = ({ movie, index }) => {
+  const { data: genresData } = useGenresQuery();
+  const { data: movieDetails } = useMovieDetailsQuery(movie?.id);
+  
   // Calculate duration (mock - in real app, get from API)
   const duration = 94; // minutes
   const watched = 1; // minutes
@@ -9,6 +14,46 @@ const MovieCard = ({ movie, index }) => {
     ? new Date(movie.release_date).getFullYear()
     : new Date().getFullYear();
   const topNumber = index !== undefined && index < 20 ? index + 1 : null;
+
+  // Get genre names from genre IDs
+  const getGenreNames = () => {
+    if (!genresData?.genres || !movie?.genre_ids) return [];
+    const genreMap = genresData.genres.reduce((acc, genre) => {
+      acc[genre.id] = genre.name;
+      return acc;
+    }, {});
+    return movie.genre_ids
+      .slice(0, 2) // Show only first 2 genres
+      .map((id) => genreMap[id])
+      .filter(Boolean);
+  };
+
+  const genreNames = getGenreNames();
+
+  // Get age rating from release_dates (prefer KR, fallback to US)
+  const getAgeRating = () => {
+    if (!movieDetails?.release_dates?.results) return null;
+    
+    // Try to find Korean rating first
+    const krRelease = movieDetails.release_dates.results.find(
+      (release) => release.iso_3166_1 === "KR"
+    );
+    if (krRelease?.release_dates?.[0]?.certification) {
+      return krRelease.release_dates[0].certification;
+    }
+    
+    // Fallback to US rating
+    const usRelease = movieDetails.release_dates.results.find(
+      (release) => release.iso_3166_1 === "US"
+    );
+    if (usRelease?.release_dates?.[0]?.certification) {
+      return usRelease.release_dates[0].certification;
+    }
+    
+    return null;
+  };
+
+  const ageRating = getAgeRating();
 
   return (
     <div className="movie-card-wrapper">
@@ -77,9 +122,19 @@ const MovieCard = ({ movie, index }) => {
           {/* Movie Info */}
           <div className="movie-info">
             <div className="movie-title">{movie.title}</div>
+            {genreNames.length > 0 && (
+              <div className="movie-genres">
+                {genreNames.map((genre, idx) => (
+                  <span key={idx} className="genre-tag">
+                    {genre}
+                  </span>
+                ))}
+              </div>
+            )}
             <div className="movie-meta">
               <span className="release-date">{releaseYear}</span>
               <span className="rating">{movie.vote_average?.toFixed(1)}</span>
+              {ageRating && <span className="age-rating">{ageRating}</span>}
             </div>
           </div>
 
