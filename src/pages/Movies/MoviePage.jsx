@@ -1,9 +1,10 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 import useMoviesQuery from "../../hooks/useMovies";
 import useGenresQuery from "../../hooks/useGenres";
 import MovieCard from "../../common/MovieCard";
 import { Alert } from "react-bootstrap";
+import MovieGridSkeleton from "../../components/Skeletons/MovieGridSkeleton";
 import "./MoviePage.style.css";
 
 const SORT_OPTIONS = [
@@ -39,7 +40,7 @@ const MoviePage = () => {
   }, [showSortMenu, showGenreMenu]);
 
   // API 호출
-  const { data, isLoading, isError, error } = useMoviesQuery({
+  const { data, isError, error } = useMoviesQuery({
     page,
     sortBy,
     genreId: genreId ? parseInt(genreId, 10) : undefined,
@@ -128,16 +129,6 @@ const MoviePage = () => {
     }
     return pages;
   }, [currentPage, totalPages]);
-
-  if (isLoading) {
-    return (
-      <div className="movie-page-container">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-        </div>
-      </div>
-    );
-  }
 
   if (isError) {
     return (
@@ -234,16 +225,9 @@ const MoviePage = () => {
       </div>
 
       {/* Movie Grid */}
-      <div className="movie-grid">
-        {data?.results?.map((movie, index) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            index={index}
-            showTopBadge={false}
-          />
-        ))}
-      </div>
+      <Suspense fallback={<MovieGridSkeleton />}>
+        <MovieGridContent movies={data?.results} />
+      </Suspense>
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -284,6 +268,22 @@ const MoviePage = () => {
           </button>
         </div>
       )}
+    </div>
+  );
+};
+
+// Movie Grid Content Component (for Suspense)
+const MovieGridContent = ({ movies }) => {
+  return (
+    <div className="movie-grid">
+      {movies?.map((movie, index) => (
+        <MovieCard
+          key={movie.id}
+          movie={movie}
+          index={index}
+          showTopBadge={false}
+        />
+      ))}
     </div>
   );
 };

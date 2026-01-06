@@ -12,6 +12,7 @@ export const useMovieReviewsQuery = (movieId) => {
     queryFn: () => fetchMovieReviews(movieId),
     select: (result) => result.data,
     enabled: !!movieId,
+    suspense: true,
   });
 };
 

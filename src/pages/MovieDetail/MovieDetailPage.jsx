@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useParams } from "react-router-dom";
 import useMovieDetailsQuery from "../../hooks/useMovieDetails";
 import useMovieRecommendationsQuery from "../../hooks/useMovieRecommendations";
@@ -9,24 +9,15 @@ import { responsive } from "../../constants/responsive";
 import { Alert } from "react-bootstrap";
 import { getYouTubeTrailerKey } from "../../utils/videoUtils";
 import VideoModal from "../../components/VideoModal/VideoModal";
+import SliderSkeleton from "../../components/Skeletons/SliderSkeleton";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./MovieDetail.style.css";
 
 const MovieDetailPage = () => {
   const { id } = useParams();
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const { data: movie, isLoading, isError, error } = useMovieDetailsQuery(id);
-  const { data: recommendations } = useMovieRecommendationsQuery(id);
-  const { data: reviews } = useMovieReviewsQuery(id);
+  const { data: movie, isError, error } = useMovieDetailsQuery(id);
   const { data: genresData } = useGenresQuery();
-  const [expandedReviews, setExpandedReviews] = useState({});
-
-  if (isLoading) {
-    return (
-      <div className="movie-detail-loading">
-        <div className="loading-spinner"></div>
-      </div>
-    );
-  }
 
   if (isError || !movie) {
     return <Alert variant="danger">Error: {error?.message || "Movie not found"}</Alert>;
@@ -76,14 +67,6 @@ const MovieDetailPage = () => {
   const posterUrl = movie.poster_path
     ? `https://media.themoviedb.org/t/p/w500${movie.poster_path}`
     : "";
-
-  // Toggle review expansion
-  const toggleReview = (reviewId) => {
-    setExpandedReviews((prev) => ({
-      ...prev,
-      [reviewId]: !prev[reviewId],
-    }));
-  };
 
   // Get YouTube trailer
   const trailerKey = getYouTubeTrailerKey(movie);
@@ -166,64 +149,14 @@ const MovieDetailPage = () => {
         </div>
 
         {/* Related Movies Section */}
-        {recommendations?.results && recommendations.results.length > 0 && (
-          <div className="movie-detail-section">
-            <h3 className="section-title">Related Movies</h3>
-            <MovieSlider
-              responsive={responsive}
-              movies={recommendations}
-              isLoading={false}
-              isError={false}
-              error={null}
-              title=""
-            />
-          </div>
-        )}
+        <Suspense fallback={<SliderSkeleton />}>
+          <RelatedMoviesSection movieId={id} />
+        </Suspense>
 
         {/* Reviews Section */}
-        {reviews?.results && reviews.results.length > 0 && (
-          <div className="movie-detail-section">
-            <h3 className="section-title">Reviews</h3>
-            <div className="reviews-container">
-              {reviews.results.map((review) => {
-                const isExpanded = expandedReviews[review.id];
-                const shouldTruncate = review.content.length > 300;
-                const displayContent = isExpanded || !shouldTruncate
-                  ? review.content
-                  : `${review.content.substring(0, 300)}...`;
-
-                return (
-                  <div key={review.id} className="review-card">
-                    <div className="review-header">
-                      <div className="review-author">
-                        <span className="author-name">{review.author}</span>
-                        {review.author_details?.rating && (
-                          <span className="author-rating">
-                            {review.author_details.rating}/10
-                          </span>
-                        )}
-                      </div>
-                      <span className="review-date">
-                        {formatDate(review.created_at)}
-                      </span>
-                    </div>
-                    <div className="review-content">
-                      <p>{displayContent}</p>
-                      {shouldTruncate && (
-                        <button
-                          className="review-expand-btn"
-                          onClick={() => toggleReview(review.id)}
-                        >
-                          {isExpanded ? "접기" : "더보기"}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        <Suspense fallback={<LoadingSpinner size="medium" fullHeight />}>
+          <ReviewsSection movieId={id} />
+        </Suspense>
       </div>
       <VideoModal
         isOpen={isVideoModalOpen}
@@ -231,6 +164,98 @@ const MovieDetailPage = () => {
         videoKey={trailerKey}
         movieTitle={movie?.title}
       />
+    </div>
+  );
+};
+
+// Related Movies Section Component (for Suspense)
+const RelatedMoviesSection = ({ movieId }) => {
+  const { data: recommendations } = useMovieRecommendationsQuery(movieId);
+
+  if (!recommendations?.results || recommendations.results.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="movie-detail-section">
+      <h3 className="section-title">Related Movies</h3>
+      <MovieSlider
+        responsive={responsive}
+        movies={recommendations}
+        isError={false}
+        error={null}
+        title=""
+      />
+    </div>
+  );
+};
+
+// Reviews Section Component (for Suspense)
+const ReviewsSection = ({ movieId }) => {
+  const { data: reviews } = useMovieReviewsQuery(movieId);
+  const [expandedReviews, setExpandedReviews] = useState({});
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
+
+  const toggleReview = (reviewId) => {
+    setExpandedReviews((prev) => ({
+      ...prev,
+      [reviewId]: !prev[reviewId],
+    }));
+  };
+
+  if (!reviews?.results || reviews.results.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="movie-detail-section">
+      <h3 className="section-title">Reviews</h3>
+      <div className="reviews-container">
+        {reviews.results.map((review) => {
+          const isExpanded = expandedReviews[review.id];
+          const shouldTruncate = review.content.length > 300;
+          const displayContent = isExpanded || !shouldTruncate
+            ? review.content
+            : `${review.content.substring(0, 300)}...`;
+
+          return (
+            <div key={review.id} className="review-card">
+              <div className="review-header">
+                <div className="review-author">
+                  <span className="author-name">{review.author}</span>
+                  {review.author_details?.rating && (
+                    <span className="author-rating">
+                      {review.author_details.rating}/10
+                    </span>
+                  )}
+                </div>
+                <span className="review-date">
+                  {formatDate(review.created_at)}
+                </span>
+              </div>
+              <div className="review-content">
+                <p>{displayContent}</p>
+                {shouldTruncate && (
+                  <button
+                    className="review-expand-btn"
+                    onClick={() => toggleReview(review.id)}
+                  >
+                    {isExpanded ? "접기" : "더보기"}
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,113 @@
+.banner-skeleton {
+  position: relative;
+  height: 70vh;
+  min-height: 500px;
+  max-height: 800px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.banner-skeleton-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 40%,
+    rgba(0, 0, 0, 0.1) 60%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.banner-skeleton-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.banner-skeleton-title {
+  width: 60%;
+  height: 3rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 8px;
+  animation: shimmer 1.5s infinite;
+}
+
+.banner-skeleton-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 550px;
+}
+
+.skeleton-line {
+  height: 1rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-line.short {
+  width: 70%;
+}
+
+.banner-skeleton-button {
+  width: 120px;
+  height: 48px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner-skeleton {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .banner-skeleton-content {
+    padding: 0 2rem;
+  }
+
+  .banner-skeleton-title {
+    height: 2.5rem;
+  }
+}
+

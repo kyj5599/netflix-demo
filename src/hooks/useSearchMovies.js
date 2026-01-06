@@ -15,6 +15,7 @@ export const useSearchMoviesQuery = (query) => {
     queryFn: () => fetchSearchMovies(query),
     select: (result) => result.data,
     enabled: !!query, // query가 있을 때만 실행
+    suspense: true,
   });
 };
 

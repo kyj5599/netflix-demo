@@ -44,6 +44,7 @@ export const useMoviesQuery = (params = {}) => {
     queryFn: () => fetchMovies(params),
     select: (result) => result.data,
     keepPreviousData: true, // 페이지네이션 시 이전 데이터 유지
+    suspense: true,
   });
 };
 

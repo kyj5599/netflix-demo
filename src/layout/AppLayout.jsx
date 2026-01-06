@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
 import "./app-layout.css";
 
 const NETFLIX_LOGO_URL =
@@ -78,7 +79,9 @@ const AppLayout = () => {
         </Container>
       </Navbar>
       <main className="app-main">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

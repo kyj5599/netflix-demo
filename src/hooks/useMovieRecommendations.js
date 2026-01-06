@@ -12,6 +12,7 @@ export const useMovieRecommendationsQuery = (movieId) => {
     queryFn: () => fetchMovieRecommendations(movieId),
     select: (result) => result.data,
     enabled: !!movieId,
+    suspense: true,
   });
 };
 

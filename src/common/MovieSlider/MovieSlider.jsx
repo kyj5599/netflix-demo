@@ -8,25 +8,13 @@ import MovieCard from "../MovieCard";
 const MovieSlider = ({
   responsive,
   movies,
-  isLoading,
   isError,
   error,
   title,
   showTopBadge = false,
 }) => {
-  if (isLoading) {
-    return (
-      <div className="popular-movie-slide-wrapper">
-        {title && <h3 className="popular-movie-title">{title}</h3>}
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-        </div>
-      </div>
-    );
-  }
-
   if (isError) {
-    return <Alert variant="danger"></Alert>;
+    return <Alert variant="danger">{error?.message || "Error loading movies"}</Alert>;
   }
 
   return (

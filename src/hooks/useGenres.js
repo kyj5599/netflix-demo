@@ -11,6 +11,7 @@ export const useGenresQuery = () => {
     queryFn: fetchGenres,
     select: (result) => result.data,
     staleTime: 1000 * 60 * 60 * 24, // 24 hours - genres don't change often
+    suspense: true,
   });
 };
 

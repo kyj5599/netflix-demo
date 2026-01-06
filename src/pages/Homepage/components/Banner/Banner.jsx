@@ -8,19 +8,10 @@ import "./Banner.style.css";
 
 const Banner = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const { data, isLoading, isError, error } = usePopularMoviesQuery();
+  const { data, isError, error } = usePopularMoviesQuery();
   const movie = data?.results[0];
   const { data: movieDetails } = useMovieDetailsQuery(movie?.id);
 
-  if (isLoading) {
-    return (
-      <div className="banner banner-loading">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-        </div>
-      </div>
-    );
-  }
   if (isError) return <Alert variant="danger">Error: {error.message}</Alert>;
   
   const backdropUrl = movie?.backdrop_path

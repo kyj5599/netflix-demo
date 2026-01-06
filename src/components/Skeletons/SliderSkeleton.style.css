@@ -1,0 +1,81 @@
+.slider-skeleton-wrapper {
+  padding: 24px 0;
+}
+
+.slider-skeleton-title {
+  width: 200px;
+  height: 1.5rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 4px;
+  margin: 0 24px 1rem 24px;
+  animation: shimmer 1.5s infinite;
+}
+
+.slider-skeleton-container {
+  display: flex;
+  gap: 16px;
+  padding: 0 24px;
+  overflow: hidden;
+}
+
+.slider-skeleton-card {
+  flex: 0 0 auto;
+  width: 200px;
+}
+
+.slider-skeleton-poster {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 8px;
+  animation: shimmer 1.5s infinite;
+  margin-bottom: 0.5rem;
+}
+
+.slider-skeleton-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slider-skeleton-text {
+  height: 0.875rem;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-radius: 4px;
+  animation: shimmer 1.5s infinite;
+}
+
+.slider-skeleton-text.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-skeleton-card {
+    width: 150px;
+  }
+}
+

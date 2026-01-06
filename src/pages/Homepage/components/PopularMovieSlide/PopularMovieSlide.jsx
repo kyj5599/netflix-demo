@@ -4,13 +4,12 @@ import { responsive } from "../../../../constants/responsive";
 import MovieSlider from "../../../../common/MovieSlider/MovieSlider";
 
 const PopularMovieSlide = () => {
-  const { data, isLoading, isError, error } = usePopularMoviesQuery();
+  const { data, isError, error } = usePopularMoviesQuery();
 
   return (
     <MovieSlider
       responsive={responsive}
       movies={data}
-      isLoading={isLoading}
       isError={isError}
       error={error}
       title="Popular Movies"
